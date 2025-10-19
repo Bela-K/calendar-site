@@ -3,7 +3,7 @@ name: Trigger Lambda on Main Merge
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   invoke-lambda:
