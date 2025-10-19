@@ -1,0 +1,152 @@
+/* Clean, variable-driven CSS for calendar with dark-mode support */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  padding: 0;
+}
+
+/* Theme variables (default = light) */
+:root {
+  --bg: #f8fafc;           /* light fallback (your light-mode values) */
+  --muted-bg: #f1f5f9;
+  --text: #111827;
+  --muted-text: #64748b;
+  --border: rgba(0,0,0,0.06);
+  --card-bg: #ffffff;
+  --event-bg: #ffffff;
+  --event-foreground: #222222;
+  --event-muted-text: #6b7280;
+}
+
+/* Dark theme overrides */
+.dark-theme {
+  --bg: #0B1220;           /* page background (soft dark) */
+  --muted-bg: #111821;     /* date header / muted surfaces */
+  --text: #EAF4FF;         /* main text color */
+  --muted-text: #9FB6CF;   /* muted text */
+  --border: rgba(255,255,255,0.06);
+  --card-bg: #0D1A2A;      /* card background slightly lighter than page */
+  --event-bg: #071826;     /* baseline event-bg (kept dark if used) */
+  --event-foreground: #212529; /* keep event text dark to remain readable on light event colors */
+  --event-muted-text: #9aaac0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Container tweaks */
+.container { max-width: 1100px; }
+
+/* Calendar layout */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  color: var(--muted-text);
+  font-weight: 600;
+}
+
+.day {
+  border: none;
+  min-height: 120px;
+}
+
+.day-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+/* Override Bootstrap card background and body to use theme variables */
+.card, .card-body {
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+.date-number {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  background: var(--muted-bg);
+  color: var(--text);
+}
+
+.events-list {
+  padding: 8px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text);
+}
+
+.event {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: var(--event-bg);
+  border: 1px solid var(--border);
+  color: var(--event-foreground);
+}
+
+.event img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.event .event-content { flex: 1 1 auto; }
+.event .event-content .small { font-size: 0.8em; color: var(--event-muted-text); }
+
+.event.filtered-out {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.day.other-month .day-card {
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+}
+
+.day.today .day-card {
+  box-shadow: 0 0 0 2px rgba(13,110,253,0.06);
+}
+
+/* Campaign colors (keep for visual differentiation) */
+.event-type-chains-of-asmodeus { background: #fff7ec; border-left: 4px solid #ff9800; }
+.event-type-curse-of-strahd { background: #fff1f2; border-left: 4px solid #6f0f15; }
+.event-type-beyond-the-boundary { background: #f2fff7; border-left: 4px solid #0f6b4e; }
+.event-type-fractured-fates { background: #faf5ff; border-left: 4px solid #4b2b6f; }
+
+/* In dark theme, keep the event colors but add a subtle inset to lift them off the darker background */
+.dark-theme .event {
+  box-shadow: inset 0 0 0 rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 900px) {
+  .event img { width: 36px; height: 36px; }
+}
+
+@media (max-width: 600px) {
+  .days { font-size: 12px; }
+  .event img { width: 28px; height: 28px; }
+  .calendar-grid { gap: 6px; }
+}
